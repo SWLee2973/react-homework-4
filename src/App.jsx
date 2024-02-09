@@ -1,11 +1,15 @@
-import './App.css'
-import { Cover } from './components'
+import './App.css';
+import { Cover, Messenger } from './components';
+import { useCover } from './hooks';
 
 function App() {
+  const cover = useCover();
 
   return (
-    <Cover />
-  )
+    <>
+      {cover ? <Cover /> : <Messenger />}
+    </>
+  );
 }
 
-export default App
+export default App;
