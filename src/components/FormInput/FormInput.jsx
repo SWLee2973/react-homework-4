@@ -9,7 +9,7 @@ function FormInput({id, ...restProps}) {
       </label>
       <input
         id={id}
-        className="w-48 h-6 rounded-sm text-xs ps-2"
+        className="w-60 h-8 rounded-sm text-sm ps-2"
         {...restProps}
       />
     </>

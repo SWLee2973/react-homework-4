@@ -11,7 +11,7 @@ function Button({type, styleClass, children, ...restProps}) {
   return (
     <button
       type="button"
-      className={`w-48 h-6 rounded-sm text-sm ${styleClass} ${buttonStyle[type]}`}
+      className={`w-60 h-8 rounded-sm text-sm ${styleClass} ${buttonStyle[type]}`}
       {...restProps}
     >
       {children}

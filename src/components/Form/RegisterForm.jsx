@@ -10,7 +10,7 @@ function RegisterForm({ backPage }) {
   };
 
   const handleRegister = () => {
-    
+
   }
 
   return (
@@ -38,7 +38,7 @@ function RegisterForm({ backPage }) {
         onChange={handleInput}
       />
 
-      <Button type="register" styleClass="absolute bottom-0" onClick={handleRegister}>
+      <Button type="register" styleClass="absolute bottom-2" onClick={handleRegister}>
         Register
       </Button>
 
