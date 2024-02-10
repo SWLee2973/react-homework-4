@@ -1,7 +1,7 @@
 import { useEffect, useState, memo } from 'react';
 import { usePb } from '/src/hooks';
 import base64 from 'base-64';
-
+import { Button } from '../';
 
 const useJWTToken = (userInfo) => {
   const payload = userInfo.split('.')[1];
@@ -27,12 +27,13 @@ function ChatRoomList({ userInfo }) {
 
   return (
     <>
-      <section>
+      <section className='w-full flex'>
         <h3 className="sr-only">닉네임</h3>
-        <figure className='flex gap-3 w-full items-center self-start mt-6'>
-          <img src='/src/assets/user.jpg' alt='thumbnail' className='w-16 rounded-full' />
+        <figure className='flex gap-3  items-center self-start ms-6 my-6'>
+          <img src='/assets/user.jpg' alt='thumbnail' className='w-16 rounded-full' />
           <figcaption className='font-bold'>{userName}</figcaption>
         </figure>
+        <Button>로그아웃</Button>
       </section>
     </>
   );
