@@ -1,7 +1,24 @@
+import { useState, useEffect } from 'react';
+import { usePb } from '/src/hooks';
 
+const getOtherUser = async (item, me) => {
+  const pb = usePb();
+  const otherUserId = item.users.filter(v => v != me)
+  console.log(otherUserId);
+  const data = await pb.collection('users').getOne(otherUserId[0]);
 
-function ChatRoom() {
-  
+  return data;
+};
+
+function ChatRoom({ item, me }) {
+  const [otherUser, setOtherUser] = useState('');
+  console.log(item);
+
+  useEffect(() => {
+    getOtherUser(item, me)
+      .then(data => setOtherUser(data.name));
+  }, []);
+
   return (
     <a
       href="#"
@@ -13,12 +30,16 @@ function ChatRoom() {
         className="ms-5 w-10 rounded-full"
       />
       <div className="flex flex-col max-w-48">
-        <strong className='truncate'>sang2973</strong>
-        <span className='truncate'>대충채팅내용</span>
+        <strong className="truncate">{otherUser}</strong>
+        <span className="truncate">
+          {item.expand
+            ? item.expand.messages[0].message
+            : '아직 대화가 없습니다.'}
+        </span>
       </div>
-      <span className='ms-auto me-5'>12:57</span>
+      <span className="ms-auto me-5">12:57</span>
     </a>
-  )
+  );
 }
 
 export default ChatRoom;
