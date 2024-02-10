@@ -8,7 +8,7 @@ function Login({ isLogin, changeState }) {
   const displayPage = () => {
     switch (page) {
       case 'register':
-        return <RegisterForm />
+        return <RegisterForm backPage={setPage} />
       default:
         return <LoginForm register={handleRegister} />
     }

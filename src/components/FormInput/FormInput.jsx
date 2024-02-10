@@ -1,6 +1,6 @@
 
 
-function FormInput({id, type, placeholder}) {
+function FormInput({id, ...restProps}) {
 
   return (
     <>
@@ -8,10 +8,9 @@ function FormInput({id, type, placeholder}) {
         {id}
       </label>
       <input
-        type={type}
         id={id}
         className="w-48 h-6 rounded-sm text-xs ps-2"
-        placeholder={placeholder}
+        {...restProps}
       />
     </>
   )
