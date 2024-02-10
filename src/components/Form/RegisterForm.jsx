@@ -51,7 +51,7 @@ function RegisterForm({ backPage }) {
   }
 
   return (
-    <form onSubmit={handleRegister} className="relative flex flex-col gap-1 h-full" method="POST">
+    <form onSubmit={handleRegister} className="relative flex flex-col gap-1 h-full py-36" method="POST">
       <h3 className="text-center font-bold mb-3">회원가입</h3>
       <FormInput
         id="email"
@@ -81,14 +81,14 @@ function RegisterForm({ backPage }) {
       <Button
         type="submit"
         theme="white"
-        styleClass="absolute bottom-2"
+        styleClass="absolute bottom-40"
       >
         Register
       </Button>
 
       <Button
         theme="zinc"
-        styleClass="absolute bottom-[-40px]"
+        styleClass="absolute bottom-28"
         onClick={handleCancel}
       >
         Cancel

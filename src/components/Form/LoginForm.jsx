@@ -9,12 +9,10 @@ async function fetchAuth(email, password) {
 
     return [pb, data];
   } catch (error) {
-    throw new Error(error);
+    alert('이메일 혹은 비밀번호가 틀렸습니다.');
+    return;
   }
 }
-
-
-  
 
 function LoginForm({ register, onLogin }) {
   const [inputInfo, handleInput] = useInput();
@@ -24,17 +22,17 @@ function LoginForm({ register, onLogin }) {
     const { email, password } = inputRef.current;
 
     fetchAuth(email.value, password.value)
-    .then(([pb]) => {
-      sessionStorage.setItem('token', pb.authStore.token);
-    })
-    .then(onLogin())
-    .catch(() => {
-      alert('이메일 혹은 비밀번호가 틀렸습니다.');
-    });
+      .then(([pb]) => {
+        sessionStorage.setItem('token', pb.authStore.token);
+      })
+      .then(() => {
+        sessionStorage.getItem('token') && onLogin(true)
+      })
+      .catch(error => error && onLogin(false));
   };
 
   return (
-    <form className="relative flex flex-col gap-1 h-full">
+    <form className="relative flex flex-col gap-1 h-full py-36">
       <FormInput
         id="email"
         type="email"
@@ -60,7 +58,7 @@ function LoginForm({ register, onLogin }) {
           Remember me
         </label>
       </div>
-      <Button theme="white" styleClass="absolute bottom-0" onClick={register}>
+      <Button theme="white" styleClass="absolute bottom-36" onClick={register}>
         Create Account
       </Button>
     </form>
