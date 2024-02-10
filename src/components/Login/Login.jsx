@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { LoginForm, RegisterForm, } from '../';
-import { useEffect } from 'react';
 
-function Login({ isLogin, changeState }) {
+function Login({ changeState }) {
   const [page, setPage] = useState('');
 
   const displayPage = () => {
@@ -10,7 +9,7 @@ function Login({ isLogin, changeState }) {
       case 'register':
         return <RegisterForm backPage={setPage} />
       default:
-        return <LoginForm register={handleRegister} />
+        return <LoginForm register={handleRegister} onLogin={changeState} />
     }
   }
 

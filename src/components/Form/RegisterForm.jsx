@@ -1,14 +1,11 @@
 import { FormInput, Button } from '../';
-import { useState, useEffect } from 'react';
-import PocketBase from 'pocketbase';
-import { useInput } from '/src/hooks';
-import { useRef } from 'react';
 
-const END_POINT = import.meta.env.VITE_PB_URL;
-const pb = new PocketBase(END_POINT)
+import { useInput, usePb } from '/src/hooks';
+import { useRef } from 'react';
 
 async function fetchRegister(userData) {
   try {
+    const pb = usePb();
     const data = await pb.collection('users').create(JSON.stringify(userData))
     return data;
   } catch(error) {
@@ -41,13 +38,13 @@ function RegisterForm({ backPage }) {
 
     const userData = {};
     userData["username"] = inputRef.current.email.value.split('@')[0];
+    userData["name"] = inputRef.current.email.value.split('@')[0];
     userData["email"] = inputRef.current.email.value;
     userData["password"] = inputRef.current.password.value;
     userData["passwordConfirm"] = inputRef.current.password.value;
 
     fetchRegister(userData)
-      .then((data) => {
-        console.log(data);
+      .then(() => {
         alert('회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.');
         backPage('');
       })
