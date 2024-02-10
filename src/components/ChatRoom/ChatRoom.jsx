@@ -4,7 +4,7 @@ import { usePb } from '/src/hooks';
 const getOtherUser = async (item, me) => {
   const pb = usePb();
   const otherUserId = item.users.filter(v => v != me)
-  console.log(otherUserId);
+  
   const data = await pb.collection('users').getOne(otherUserId[0]);
 
   return data;
@@ -12,7 +12,6 @@ const getOtherUser = async (item, me) => {
 
 function ChatRoom({ item, me }) {
   const [otherUser, setOtherUser] = useState('');
-  console.log(item);
 
   useEffect(() => {
     getOtherUser(item, me)

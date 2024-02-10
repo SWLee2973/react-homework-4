@@ -34,6 +34,16 @@ const fetchChatRoom = async (userId) => {
   }
 };
 
+const setSubscribeChat = (userId, setChatList) => {
+  const pb = usePb();
+  pb.collection('chats').subscribe('*', async () => {
+    fetchChatRoom(userId).then((data) => {
+      console.log('executed');
+      setChatList([...data]);
+    });
+  })
+}
+
 function ChatRoomList({ userInfo, changeState }) {
   const { id: userId } = useJWTToken(userInfo);
   const [userName, setUserName] = useState('');
@@ -41,15 +51,15 @@ function ChatRoomList({ userInfo, changeState }) {
 
   useEffect(() => {
     useSetInfo(userId, setUserName)
-  }, []);
-  
-  useEffect(() => {    
     fetchChatRoom(userId).then((data) => {
-      console.log(data);
       setChatList([...data]);
-      console.log(chatList);
     });
-  }, [userId]);
+    setSubscribeChat(userId, setChatList);
+  }, []);
+
+  useEffect(() => {
+
+  }, [])
 
   const handleLogout = () => {
     const pb = usePb();
@@ -57,6 +67,7 @@ function ChatRoomList({ userInfo, changeState }) {
       pb.authStore.clear();
       sessionStorage.removeItem('token');
       changeState(false);
+      pb.collection('chats').unsubscribe('*');
     }
   };
 
