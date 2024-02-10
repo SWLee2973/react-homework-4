@@ -1,13 +1,13 @@
 import { useEffect, useState, memo } from 'react';
-import { ReactComponent as Logout } from '/src/assets/logout.svg';
+
 import { usePb } from '/src/hooks';
 import base64 from 'base-64';
-import { Button } from '../';
+import { Header } from '../';
 
 const useJWTToken = (userInfo) => {
   const payload = userInfo.split('.')[1];
   const userData = base64.decode(payload);
-  
+
   return JSON.parse(userData);
 };
 
@@ -28,22 +28,35 @@ function ChatRoomList({ userInfo, changeState }) {
 
   const handleLogout = () => {
     const pb = usePb();
-    if(confirm('로그아웃 하시겠습니까?')) {
+    if (confirm('로그아웃 하시겠습니까?')) {
       pb.authStore.clear();
-      sessionStorage.removeItem('token')
-      changeState(false)
+      sessionStorage.removeItem('token');
+      changeState(false);
     }
-  }
+  };
 
   return (
     <>
-      <section className='w-full flex justify-center'>
-        <h3 className="sr-only">닉네임</h3>
-        <figure className='flex gap-3 w-full items-center justify-stretch mx-6 my-6'>
-          <img src='/assets/user.jpg' alt='thumbnail' className='w-16 rounded-full' />
-          <figcaption className='font-bold'>{userName}</figcaption>
-          <Button styleClass='w-8 ms-auto' aria-label='로그아웃' onClick={handleLogout}><Logout /></Button>  
-        </figure>
+      <Header userName={userName} handleLogout={handleLogout} />
+      <section className="p-3 size-full flex flex-col gap-3">
+        <h3 className="sr-only">채팅방 리스트</h3>
+        <a
+          href="#"
+          className="hover:bg-gray-200 w-full h-16 bg-gray-100 flex items-center gap-5"
+        >
+          <img
+            src="/assets/user.jpg"
+            alt="thumbnail"
+            className="ms-5 w-10 rounded-full"
+          />
+          <div className="flex flex-col max-w-48">
+            <strong className='truncate'>sang2973</strong>
+            <span className='truncate'>대충채팅내용</span>
+          </div>
+          <span className='ms-auto me-5'>12:57</span>
+        </a>
+        <a href="#" className="hover:bg-gray-200 w-full h-16 bg-gray-100"></a>
+        <a href="#" className="hover:bg-gray-200 w-full h-16 bg-gray-100"></a>
       </section>
     </>
   );
