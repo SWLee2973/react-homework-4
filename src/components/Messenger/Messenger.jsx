@@ -7,22 +7,26 @@ function Messenger() {
   const [isLogin, setIsLogin] = useState(false);
   const pb = usePb();
   const token = pb.authStore.token;
-  const sessionToken = sessionStorage.getItem('token')
+  const sessionToken = sessionStorage.getItem('token');
 
   useEffect(() => {
-    if(pb.authStore.isValid && token === sessionToken) {
+    if (pb.authStore.isValid && token === sessionToken) {
       setIsLogin(true);
     }
-  }, [token])
+  }, [token]);
 
   const changeLoginState = (bool) => {
     setIsLogin(bool);
-  }
+  };
 
   return (
     <section className="bg-[#eee7d7] w-96 h-[720px] flex items-center flex-col">
       <h2 className="sr-only">Sang Messenger</h2>
-      {isLogin ? <ChatRoomList userInfo={token} /> : <Login isLogin={isLogin} changeState={changeLoginState}/>}
+      {isLogin ? (
+        <ChatRoomList userInfo={token} changeState={changeLoginState} />
+      ) : (
+        <Login isLogin={isLogin} changeState={changeLoginState} />
+      )}
     </section>
   );
 }
