@@ -7,7 +7,7 @@ function LoginForm({ register }) {
     <form className="relative flex flex-col gap-1 h-full">
       <FormInput id="email" type="email" placeholder="your@company.io" />
       <FormInput id="password" type="password" placeholder="password" />
-      <Button type="login" styleClass="mt-2">
+      <Button theme="zinc" styleClass="mt-2">
         Log in
       </Button>
       <div className="flex gap-1">
@@ -16,7 +16,7 @@ function LoginForm({ register }) {
           Remember me
         </label>
       </div>
-      <Button type="register" styleClass="absolute bottom-0" onClick={register}>
+      <Button theme="white" styleClass="absolute bottom-0" onClick={register}>
         Create Account
       </Button>
     </form>

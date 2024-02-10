@@ -38,12 +38,13 @@ function RegisterForm({ backPage }) {
         onChange={handleInput}
       />
 
-      <Button type="register" styleClass="absolute bottom-2" onClick={handleRegister}>
+      <Button theme="white" styleClass="absolute bottom-2" onClick={handleRegister}>
         Register
       </Button>
 
       <Button
-        styleClass="hover:bg-zinc-900 absolute bottom-[-30px] bg-zinc-700 text-white"
+        theme="zinc"
+        styleClass="absolute bottom-[-40px]"
         onClick={handleCancel}
       >
         Cancel

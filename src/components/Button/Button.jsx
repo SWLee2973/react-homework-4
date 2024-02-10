@@ -1,17 +1,17 @@
 
 
-const buttonStyle = {
-  login: 'hover:bg-zinc-900  bg-zinc-700 text-white',
-  register: 'hover:bg-slate-300  bg-white text-zinc-700'
+const buttonTheme = {
+  zinc: 'hover:bg-zinc-900  bg-zinc-700 text-white',
+  white: 'hover:bg-slate-300  bg-white text-zinc-700'
 }
 
-function Button({type, styleClass, children, ...restProps}) {
+function Button({styleClass, theme, children, ...restProps}) {
 
 
   return (
     <button
       type="button"
-      className={`w-60 h-8 rounded-sm text-sm ${styleClass} ${buttonStyle[type]}`}
+      className={`w-72 h-10 rounded-sm text-md ${styleClass} ${buttonTheme[theme]}`}
       {...restProps}
     >
       {children}
