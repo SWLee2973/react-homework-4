@@ -1,7 +1,6 @@
+import { forwardRef } from 'react';
 
-
-function FormInput({id, ...restProps}) {
-
+function FormInput({ id, ...restProps }, ref) {
   return (
     <>
       <label htmlFor={id} className="sr-only">
@@ -9,11 +8,12 @@ function FormInput({id, ...restProps}) {
       </label>
       <input
         id={id}
+        ref={ref}
         className="w-72 h-10 rounded-sm text-md ps-3"
         {...restProps}
       />
     </>
-  )
+  );
 }
 
-export default FormInput;
+export default forwardRef(FormInput);
