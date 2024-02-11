@@ -1,11 +1,17 @@
 import { ReactComponent as Logout } from '/src/assets/logout.svg';
 import { ReactComponent as Finder } from '/src/assets/finder.svg';
-import { Button } from '../';
-import { memo } from 'react';
+import { Button, SearchUser } from '../';
+import { memo, useState } from 'react';
 
-function Header({ userName, handleLogout }) {
+function Header({ userName, userId, handleLogout }) {
+  const [searchUser, displaySearchUser] = useState(false);
+
+  const searchHandler = () => {
+    displaySearchUser(v => !v);
+  }
+
   return (
-    <section className="w-full flex justify-center">
+    <section className="w-full flex justify-center relative">
       <h3 className="sr-only">닉네임</h3>
       <figure className="flex gap-3 w-full items-center justify-stretch mx-6 my-6">
         <img
@@ -19,7 +25,7 @@ function Header({ userName, handleLogout }) {
             styleClass="w-8"
             aria-label="상대찾기"
             title='상대찾기'
-            // onClick={handleLogout}
+            onClick={searchHandler}
           >
             <Finder />
           </Button>
@@ -33,6 +39,7 @@ function Header({ userName, handleLogout }) {
           </Button>
         </div>
       </figure>
+      {searchUser && <SearchUser currentUser={userId} closeHandler={searchHandler} />}
     </section>
   );
 }
