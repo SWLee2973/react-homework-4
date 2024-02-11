@@ -4,6 +4,7 @@ export { default as Button } from './Button/Button';
 export { default as Header } from './Header/Header';
 export { default as Message } from './Message/Message';
 export { default as ChatRoom } from './ChatRoom/ChatRoom';
+export { default as ChatForm } from './Form/ChatForm';
 export { default as LoginForm } from './Form/LoginForm';
 export { default as Messenger } from './Messenger/Messenger';
 export { default as FormInput } from './FormInput/FormInput';

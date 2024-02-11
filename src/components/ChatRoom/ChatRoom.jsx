@@ -1,5 +1,5 @@
-import { ChatRoomHeader, Message } from '../';
-import { useState, useEffect } from 'react';
+import { ChatForm, ChatRoomHeader, Message } from '../';
+import { useState, useEffect, useRef } from 'react';
 import { usePb } from '/src/hooks';
 
 const CHAT_DATA = {
@@ -30,10 +30,8 @@ const getMessages = async (chatRoomId, me) => {
   }
 };
 
-function ChatRoom({ closer, chatRoomId, me }) {
-  const [chatRoomInfo, updateChatRoomInfo] = useState(CHAT_DATA);
-
-  useEffect(() => {
+const useUpdateMessages = (chatRoomId, me, updateChatRoomInfo) => {
+  
     getMessages(chatRoomId, me).then((item) => {
       const { data: message, otherUser, currentUser } = item;
       const messages = message.expand ? message.expand.messages : '';
@@ -44,34 +42,50 @@ function ChatRoom({ closer, chatRoomId, me }) {
         currentUser: currentUser.username,
       });
     });
+}
+
+function ChatRoom({ closer, chatRoomId, me }) {
+  const [chatRoomInfo, updateChatRoomInfo] = useState(CHAT_DATA);
+  const messageArea = useRef(null);
+  const pb = usePb();
+
+  useEffect(() => {
+    useUpdateMessages(chatRoomId, me, updateChatRoomInfo)
+    
+    pb.collection('chats').subscribe('*', async () => {
+      useUpdateMessages(chatRoomId, me, updateChatRoomInfo)
+    });
+
+    messageArea.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
   }, []);
+
+  // useEffect(() => {
+  //   console.log('111');
+  //   messageArea.current.scrollIntoView(false);
+  // }, [chatRoomInfo.messages]);
+
+  const closeHandler = () => {
+    pb.collection('chats').unsubscribe('*');
+    closer();
+  }
 
   return (
     <section className="absolute z-10 w-full h-full bg-slate-200">
       <h3 className="sr-only">{chatRoomInfo.otherUser} 채팅방</h3>
-      <ChatRoomHeader closeHandler={closer} user={chatRoomInfo.otherUser} />
-      <section className="p-4 w-full h-[500px] overflow-y-scroll scrollbar-hide">
+      <ChatRoomHeader closeHandler={closeHandler} user={chatRoomInfo.otherUser} />
+      <section ref={messageArea} className="p-4 w-full h-[500px] overflow-y-scroll scrollbar-hide">
         {chatRoomInfo.messages &&
-          chatRoomInfo.messages.toReversed().map((item) => {
+          chatRoomInfo.messages.map((item) => {
             return (
               <Message
                 key={item.id}
                 item={item}
                 currentUser={chatRoomInfo.currentUser}
-              />
-            );
-          })}
+                />
+                );
+              })}
       </section>
-      <section className="w-full h-[140px] relative">
-        <textarea
-          className="outline-none border-solid border-zinc-200 border-2 size-full resize-none p-3 scrollbar-hide"
-          name=""
-          id=""
-        ></textarea>
-        <button className="absolute bottom-2 right-2 bg-slate-100 py-1 px-3">
-          전송
-        </button>
-      </section>
+      <ChatForm currentChat={chatRoomInfo.messages} currentRoom={chatRoomId} sender={me} />
     </section>
   );
 }

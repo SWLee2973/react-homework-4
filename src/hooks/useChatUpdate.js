@@ -30,7 +30,6 @@ const setSubscribeChat = (userId, setChatList) => {
   const pb = usePb();
   pb.collection('chats').subscribe('*', async () => {
     fetchChatRoom(userId).then((data) => {
-      console.log('executed');
       setChatList([...data]);
     });
   });
@@ -44,7 +43,7 @@ function useChatUpdate(userId, setUserName, setChatList) {
     fetchChatRoom(userId).then((data) => {
       setChatList([...data]);
     });
-    setSubscribeChat(userId, setChatList);
+    // setSubscribeChat(userId, setChatList);
   }, []);
 }
 

@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 const displayTime = (time) => time.split(' ')[1].slice(0, 5);
 
 function Message({ item, currentUser }) {
@@ -36,4 +38,4 @@ function Message({ item, currentUser }) {
   );
 }
 
-export default Message;
+export default memo(Message);
