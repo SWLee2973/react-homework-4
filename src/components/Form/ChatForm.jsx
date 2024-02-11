@@ -9,6 +9,9 @@ const fetchMessage = async (currentChat, message, roomId, userId) => {
       "chats": `${roomId}`,
       "users": `${userId}`
     }
+    
+    if(currentChat === '') currentChat = currentChat.split('');
+
     const currentMessageId = currentChat.map(item => item.id)
     pb.collection('messages').create(messageData)
       .then(data => {

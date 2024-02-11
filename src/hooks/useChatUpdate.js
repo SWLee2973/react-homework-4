@@ -21,7 +21,7 @@ const fetchChatRoom = async (userId, pb) => {
 
     return roomData;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 

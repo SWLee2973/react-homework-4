@@ -9,7 +9,7 @@ async function fetchRegister(userData) {
     const data = await pb.collection('users').create(JSON.stringify(userData))
     return data;
   } catch(error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
