@@ -3,7 +3,7 @@ import { ReactComponent as Finder } from '/src/assets/finder.svg';
 import { Button, SearchUser } from '../';
 import { memo, useState } from 'react';
 
-function Header({ userName, userId, handleLogout }) {
+function Header({ userName, userId, handleLogout, searchOpen }) {
   const [searchUser, displaySearchUser] = useState(false);
 
   const searchHandler = () => {
@@ -39,7 +39,7 @@ function Header({ userName, userId, handleLogout }) {
           </Button>
         </div>
       </figure>
-      {searchUser && <SearchUser currentUser={userId} closeHandler={searchHandler} />}
+      {searchUser && <SearchUser currentUser={userId} closeHandler={searchHandler} resultOpen={searchOpen}/>}
     </section>
   );
 }

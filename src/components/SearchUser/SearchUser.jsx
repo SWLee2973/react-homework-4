@@ -15,15 +15,32 @@ const getSearchResult = async (pb, id, query) => {
     fields: 'id, username',
   });
 
-  console.log(data);
-
   return data;
 };
 
-function SearchUser({ currentUser, closeHandler }) {
+const makeChatRoom = async (pb, currentUserId, selectUserId, resultOpen) => {
+  const data = await pb.collection('chats').getFullList({
+    filter: `users~"${currentUserId}" && users~"${selectUserId}"`
+  })
+
+  if(data.length > 0) {
+    resultOpen(data[0].id);
+    return;
+  }
+
+  const chatCreateData = {
+    users: [currentUserId, selectUserId]
+  }
+
+  pb.collection('chats').create(JSON.stringify(chatCreateData))
+    .then((data) => resultOpen(data.id));
+}
+
+function SearchUser({ currentUser, closeHandler, resultOpen }) {
   const pb = usePb();
-  // const
   const [user, searchUser] = useState(INITIAL_SEARCH_STATE);
+
+  pb.autoCancellation(false);
 
   const handleSearchInput = (e) => {
     searchUser({
@@ -32,8 +49,11 @@ function SearchUser({ currentUser, closeHandler }) {
     });
   };
 
-  const handleStartChat = (e) => {
-    console.log('click!');
+  const handleStartChat = (currentUserId, selectUserId, closeHandler, resultOpen) => {
+    return () => {
+      makeChatRoom(pb, currentUserId, selectUserId, resultOpen)
+      closeHandler();
+    }
   };
 
   useEffect(() => {
@@ -71,7 +91,7 @@ function SearchUser({ currentUser, closeHandler }) {
                 <SearchUserCard
                   key={item.id}
                   userInfo={item}
-                  handleStartChat={handleStartChat}
+                  handleStartChat={handleStartChat(currentUser, item.id, closeHandler, resultOpen)}
                 />
               );
             })}

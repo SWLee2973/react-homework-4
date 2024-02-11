@@ -43,7 +43,7 @@ function ChatRoomList({ userInfo, changeState }) {
 
   return (
     <>
-      <Header userName={userName} userId={userId} handleLogout={handleLogout} />
+      <Header userName={userName} userId={userId} handleLogout={handleLogout} searchOpen={openChatRoom} />
       <section className="p-3 size-full flex flex-col gap-3 overflow-y-scroll scrollbar-hide">
         <h3 className="sr-only">채팅방 리스트</h3>
         {chatList.length > 0 ? (
