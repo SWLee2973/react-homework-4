@@ -26,7 +26,7 @@ function ChatRoomCard({ item, me, opener }) {
   const lastChatTime = last && (
     last.created.split(' ')[0] === today ?
     last.created.split(' ')[1].slice(0, 5)
-    : last.created.split(' ')[0]
+    : last.created.split(' ')[0].slice(5)
   );
 
   const lastMessage = last ? last.message : '아직 대화가 없습니다.'

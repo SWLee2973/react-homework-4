@@ -1,7 +1,7 @@
 import { ReactComponent as Close } from '/src/assets/close.svg';
 import { Button } from '../';
 
-function ChatRoomHeader({closeHandler}) {
+function ChatRoomHeader({closeHandler, user}) {
   return (
     <figure className="flex gap-3 w-full items-center justify-stretch ps-4 pe-6 py-4">
       <img
@@ -9,7 +9,7 @@ function ChatRoomHeader({closeHandler}) {
         alt="thumbnail"
         className="w-12 rounded-full"
       />
-      <figcaption className="font-bold">sang2973</figcaption>
+      <figcaption className="font-bold">{user}</figcaption>
       <div className="ms-auto flex gap-4">
         <Button
           styleClass="w-6"

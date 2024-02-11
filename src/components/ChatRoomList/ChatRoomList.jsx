@@ -63,7 +63,7 @@ function ChatRoomList({ userInfo, changeState }) {
         )}
       </section>
       {chatRoom.length > 0 && (
-        <ChatRoom closer={handleCloseChatRoom} chatRoomId={chatRoom} />
+        <ChatRoom closer={handleCloseChatRoom} chatRoomId={chatRoom} me={userId} />
       )}
     </>
   );
