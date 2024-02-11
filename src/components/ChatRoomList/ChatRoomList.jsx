@@ -2,7 +2,7 @@ import { useEffect, useState, memo } from 'react';
 
 import { usePb } from '/src/hooks';
 import base64 from 'base-64';
-import { ChatRoom, Header } from '../';
+import { ChatRoomCard, Header } from '../';
 
 const useJWTToken = (userInfo) => {
   const payload = userInfo.split('.')[1];
@@ -77,7 +77,7 @@ function ChatRoomList({ userInfo, changeState }) {
       <section className="p-3 size-full flex flex-col gap-3 overflow-y-scroll scrollbar-hide">
         <h3 className="sr-only">채팅방 리스트</h3>
         {chatList && chatList.map(item => {
-          return (<ChatRoom key={item.id} item={item} me={userId}/>)
+          return (<ChatRoomCard key={item.id} item={item} me={userId}/>)
         })}
       </section>
     </>

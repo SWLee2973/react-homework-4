@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 const buttonTheme = {
   zinc: 'hover:bg-zinc-900  bg-zinc-700 text-white',
   white: 'hover:bg-slate-300  bg-white text-zinc-700',
@@ -21,4 +23,4 @@ function Button({
   );
 }
 
-export default Button;
+export default memo(Button);

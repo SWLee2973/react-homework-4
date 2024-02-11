@@ -1,6 +1,7 @@
 import { ReactComponent as Logout } from '/src/assets/logout.svg';
 import { ReactComponent as Finder } from '/src/assets/finder.svg';
 import { Button } from '../';
+import { memo } from 'react';
 
 function Header({ userName, handleLogout }) {
   return (
@@ -36,4 +37,4 @@ function Header({ userName, handleLogout }) {
   );
 }
 
-export default Header;
+export default memo(Header);

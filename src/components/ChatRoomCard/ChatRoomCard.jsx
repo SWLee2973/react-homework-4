@@ -10,7 +10,7 @@ const getOtherUser = async (item, me) => {
   return data;
 };
 
-function ChatRoom({ item, me }) {
+function ChatRoomCard({ item, me }) {
   const [otherUser, setOtherUser] = useState('');
 
   useEffect(() => {
@@ -41,4 +41,4 @@ function ChatRoom({ item, me }) {
   );
 }
 
-export default ChatRoom;
+export default ChatRoomCard;
