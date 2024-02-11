@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo } from 'react';
 
 const displayTime = (time) => time.split(' ')[1].slice(0, 5);
 
@@ -12,7 +12,7 @@ function Message({ item, currentUser }) {
           <span className="text-xs font-semibold text-slate-600">
             {displayTime(item.created)}
           </span>
-          <span className="bg-yellow-300 px-2 py-1 rounded-md text-sm">
+          <span className="bg-yellow-300 px-2 py-1 rounded-md text-sm max-w-72">
             {item.message}
           </span>
         </div>
@@ -28,8 +28,12 @@ function Message({ item, currentUser }) {
               {item.expand.users.name}
             </figcaption>
             <div className="flex items-end gap-1">
-              <span className="bg-slate-50 px-2 py-1 rounded-md text-sm">{item.message}</span>
-              <span className="text-xs font-semibold text-slate-600">{displayTime(item.created)}</span>
+              <span className="bg-slate-50 px-2 py-1 rounded-md text-sm max-w-72">
+                {item.message}
+              </span>
+              <span className="text-xs font-semibold text-slate-600">
+                {displayTime(item.created)}
+              </span>
             </div>
           </div>
         </figure>

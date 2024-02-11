@@ -16,16 +16,17 @@ function ChatRoomList({ userInfo, changeState }) {
   const [userName, setUserName] = useState('');
   const [chatList, setChatList] = useState([]);
   const [chatRoom, openChatRoom] = useState('');
+  const pb = usePb();
+  pb.autoCancellation(false);
 
-  useChatUpdate(userId, setUserName, setChatList);
+  useChatUpdate(userId, setUserName, setChatList, pb);
 
   const handleLogout = () => {
-    const pb = usePb();
     if (confirm('로그아웃 하시겠습니까?')) {
       pb.authStore.clear();
       sessionStorage.removeItem('token');
       changeState(false);
-      pb.collection('chats').unsubscribe('*');
+      pb.collection('chats').unsubscribe();
     }
   };
 
@@ -53,6 +54,7 @@ function ChatRoomList({ userInfo, changeState }) {
                 item={item}
                 me={userId}
                 opener={handleOpenChatRoom(item.id)}
+                pb={pb}
               />
             );
           })
@@ -63,7 +65,7 @@ function ChatRoomList({ userInfo, changeState }) {
         )}
       </section>
       {chatRoom.length > 0 && (
-        <ChatRoom closer={handleCloseChatRoom} chatRoomId={chatRoom} me={userId} />
+        <ChatRoom closer={handleCloseChatRoom} chatRoomId={chatRoom} me={userId} pb={pb} />
       )}
     </>
   );

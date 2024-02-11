@@ -1,8 +1,7 @@
 import { useState, useEffect, memo } from 'react';
-import { usePb } from '/src/hooks';
+// import { usePb } from '/src/hooks';
 
-const getOtherUser = async (item, me) => {
-  const pb = usePb();
+const getOtherUser = async (item, me, pb) => {
   const otherUserId = item.users.filter(v => v != me)
   
   const data = await pb.collection('users').getOne(otherUserId[0]);
@@ -18,11 +17,11 @@ const printDate = (date) => {
   return `${year}-${month}-${day}`;
 }
 
-function ChatRoomCard({ item, me, opener }) {
+function ChatRoomCard({ item, me, opener, pb }) {
   const [otherUser, setOtherUser] = useState('');
   const today = printDate(new Date());
 
-  const last = item.expand ? item.expand.messages[0] : '';
+  const last = item.expand ? item.expand.messages[item.expand.messages.length-1] : '';
   const lastChatTime = last && (
     last.created.split(' ')[0] === today ?
     last.created.split(' ')[1].slice(0, 5)
@@ -32,7 +31,7 @@ function ChatRoomCard({ item, me, opener }) {
   const lastMessage = last ? last.message : '아직 대화가 없습니다.'
 
   useEffect(() => {
-    getOtherUser(item, me)
+    getOtherUser(item, me, pb)
       .then(data => setOtherUser(data.name));
   }, []);
 

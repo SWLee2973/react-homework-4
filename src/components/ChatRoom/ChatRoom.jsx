@@ -8,8 +8,7 @@ const CHAT_DATA = {
   messages: [],
 };
 
-const getMessages = async (chatRoomId, me) => {
-  const pb = usePb();
+const getMessages = async (chatRoomId, me, pb) => {
 
   try {
     const messageData = await pb.collection('chats').getFullList({
@@ -30,50 +29,50 @@ const getMessages = async (chatRoomId, me) => {
   }
 };
 
-const useUpdateMessages = (chatRoomId, me, updateChatRoomInfo) => {
-  
-    getMessages(chatRoomId, me).then((item) => {
-      const { data: message, otherUser, currentUser } = item;
-      const messages = message.expand ? message.expand.messages : '';
+const useUpdateMessages = (chatRoomId, me, updateChatRoomInfo, pb) => {
+  getMessages(chatRoomId, me, pb).then((item) => {
+    const { data: message, otherUser, currentUser } = item;
+    const messages = message.expand ? message.expand.messages : '';
 
-      updateChatRoomInfo({
-        messages,
-        otherUser: otherUser.name,
-        currentUser: currentUser.username,
-      });
+    updateChatRoomInfo({
+      messages,
+      otherUser: otherUser.name,
+      currentUser: currentUser.username,
     });
-}
+  });
+};
 
-function ChatRoom({ closer, chatRoomId, me }) {
+function ChatRoom({ closer, chatRoomId, me, pb }) {
   const [chatRoomInfo, updateChatRoomInfo] = useState(CHAT_DATA);
-  const messageArea = useRef(null);
-  const pb = usePb();
+  const scrollRef = useRef(null);
 
   useEffect(() => {
-    useUpdateMessages(chatRoomId, me, updateChatRoomInfo)
-    
+    useUpdateMessages(chatRoomId, me, updateChatRoomInfo, pb);
+
+    pb.collection('chats').unsubscribe();
     pb.collection('chats').subscribe('*', async () => {
-      useUpdateMessages(chatRoomId, me, updateChatRoomInfo)
+      useUpdateMessages(chatRoomId, me, updateChatRoomInfo, pb);
     });
 
-    messageArea.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
+    scrollRef.current?.scrollTo(0, 65535);
   }, []);
 
-  // useEffect(() => {
-  //   console.log('111');
-  //   messageArea.current.scrollIntoView(false);
-  // }, [chatRoomInfo.messages]);
-
   const closeHandler = () => {
-    pb.collection('chats').unsubscribe('*');
+    pb.collection('chats').unsubscribe();
     closer();
-  }
+  };
 
   return (
     <section className="absolute z-10 w-full h-full bg-slate-200">
       <h3 className="sr-only">{chatRoomInfo.otherUser} 채팅방</h3>
-      <ChatRoomHeader closeHandler={closeHandler} user={chatRoomInfo.otherUser} />
-      <section ref={messageArea} className="p-4 w-full h-[500px] overflow-y-scroll scrollbar-hide">
+      <ChatRoomHeader
+        closeHandler={closeHandler}
+        user={chatRoomInfo.otherUser}
+      />
+      <section
+        ref={scrollRef}
+        className="p-4 w-full h-[500px] overflow-y-scroll scrollbar-hide"
+      >
         {chatRoomInfo.messages &&
           chatRoomInfo.messages.map((item) => {
             return (
@@ -81,11 +80,15 @@ function ChatRoom({ closer, chatRoomId, me }) {
                 key={item.id}
                 item={item}
                 currentUser={chatRoomInfo.currentUser}
-                />
-                );
-              })}
+              />
+            );
+          })}
       </section>
-      <ChatForm currentChat={chatRoomInfo.messages} currentRoom={chatRoomId} sender={me} />
+      <ChatForm
+        currentChat={chatRoomInfo.messages}
+        currentRoom={chatRoomId}
+        sender={me}
+      />
     </section>
   );
 }
