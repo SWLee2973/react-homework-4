@@ -9,7 +9,7 @@ export default {
 
 export const Login = {
   args: {
-    type: 'login',
+    theme: 'zinc',
     children: 'Log in',
   }
 }
@@ -17,9 +17,9 @@ Login.storyName = '로그인'
 
 export const Register = {
   args: {
-    type: 'register',
+    theme: 'white',
     children: 'Create Account',
-    styleClass: "absolute bottom-0",
+    styleClass: "absolute bottom-32",
   }
 }
 Register.storyName = '회원가입'

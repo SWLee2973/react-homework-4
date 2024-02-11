@@ -10,8 +10,26 @@ const getOtherUser = async (item, me) => {
   return data;
 };
 
+const printDate = (date) => {
+  const year = date.getFullYear();
+  const month = (date.getMonth()+1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
+
 function ChatRoomCard({ item, me }) {
   const [otherUser, setOtherUser] = useState('');
+  const today = printDate(new Date());
+
+  const last = item.expand ? item.expand.messages[0] : '';
+  const lastChatTime = last && (
+    last.created.split(' ')[0] === today ?
+    last.created.split(' ')[1].slice(0, 5)
+    : last.created.split(' ')[0]
+  );
+  
+  const lastMessage = last ? last.message : '아직 대화가 없습니다.'
 
   useEffect(() => {
     getOtherUser(item, me)
@@ -31,12 +49,12 @@ function ChatRoomCard({ item, me }) {
       <div className="flex flex-col max-w-48">
         <strong className="truncate">{otherUser}</strong>
         <span className="truncate">
-          {item.expand
-            ? item.expand.messages[0].message
-            : '아직 대화가 없습니다.'}
+          {lastMessage}
         </span>
       </div>
-      <span className="ms-auto me-5">12:57</span>
+      <span className="ms-auto me-5">
+        {lastChatTime}
+      </span>
     </a>
   );
 }
