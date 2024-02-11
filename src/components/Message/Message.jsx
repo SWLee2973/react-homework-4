@@ -1,14 +1,14 @@
-import { memo } from 'react';
+import { memo, forwardRef, useEffect } from 'react';
 
 const displayTime = (time) => time.split(' ')[1].slice(0, 5);
 
-function Message({ item, currentUser }) {
+function Message({ item, currentUser }, ref) {
   const talker = item.expand.users.name;
 
   return (
     <>
       {talker === currentUser ? (
-        <div className="flex justify-end items-end gap-1 my-1">
+        <div ref={ref} className="flex justify-end items-end gap-1 my-1">
           <span className="text-xs font-semibold text-slate-600">
             {displayTime(item.created)}
           </span>
@@ -17,7 +17,7 @@ function Message({ item, currentUser }) {
           </span>
         </div>
       ) : (
-        <figure className="flex gap-3 w-full items-start justify-stretch py-1 my-1">
+        <figure ref={ref} className="flex gap-3 w-full items-start justify-stretch py-1 my-1">
           <img
             src="/assets/user.jpg"
             alt="thumbnail"
@@ -42,4 +42,4 @@ function Message({ item, currentUser }) {
   );
 }
 
-export default memo(Message);
+export default memo(forwardRef(Message));

@@ -1,6 +1,5 @@
 import { ChatForm, ChatRoomHeader, Message } from '../';
 import { useState, useEffect, useRef } from 'react';
-import { usePb } from '/src/hooks';
 
 const CHAT_DATA = {
   currentUser: '',
@@ -9,7 +8,6 @@ const CHAT_DATA = {
 };
 
 const getMessages = async (chatRoomId, me, pb) => {
-
   try {
     const messageData = await pb.collection('chats').getFullList({
       fields:
@@ -29,22 +27,28 @@ const getMessages = async (chatRoomId, me, pb) => {
   }
 };
 
-const useUpdateMessages = (chatRoomId, me, updateChatRoomInfo, pb) => {
-  getMessages(chatRoomId, me, pb).then((item) => {
-    const { data: message, otherUser, currentUser } = item;
-    const messages = message.expand ? message.expand.messages : '';
 
-    updateChatRoomInfo({
-      messages,
-      otherUser: otherUser.name,
-      currentUser: currentUser.username,
-    });
-  });
-};
 
 function ChatRoom({ closer, chatRoomId, me, pb }) {
   const [chatRoomInfo, updateChatRoomInfo] = useState(CHAT_DATA);
   const scrollRef = useRef(null);
+
+  const useUpdateMessages = (chatRoomId, me, updateChatRoomInfo, pb) => {
+    getMessages(chatRoomId, me, pb).then((item) => {
+      const { data: message, otherUser, currentUser } = item;
+      const messages = message.expand ? message.expand.messages : '';
+  
+      updateChatRoomInfo({
+        messages,
+        otherUser: otherUser.name,
+        currentUser: currentUser.username,
+      });
+    }).then(() => {
+      setTimeout(() => {
+        scrollRef.current?.scrollIntoView(false)
+      }, 10)
+    });
+  };  
 
   useEffect(() => {
     useUpdateMessages(chatRoomId, me, updateChatRoomInfo, pb);
@@ -53,8 +57,6 @@ function ChatRoom({ closer, chatRoomId, me, pb }) {
     pb.collection('chats').subscribe('*', async () => {
       useUpdateMessages(chatRoomId, me, updateChatRoomInfo, pb);
     });
-
-    scrollRef.current?.scrollTo(0, 65535);
   }, []);
 
   const closeHandler = () => {
@@ -69,14 +71,12 @@ function ChatRoom({ closer, chatRoomId, me, pb }) {
         closeHandler={closeHandler}
         user={chatRoomInfo.otherUser}
       />
-      <section
-        ref={scrollRef}
-        className="p-4 w-full h-[500px] overflow-y-scroll scrollbar-hide"
-      >
+      <section className="p-4 w-full h-[500px] overflow-y-scroll scrollbar-hide">
         {chatRoomInfo.messages &&
-          chatRoomInfo.messages.map((item) => {
+          chatRoomInfo.messages.map((item, index, array) => {
             return (
               <Message
+                ref={index === array.length - 1 ? scrollRef : null}
                 key={item.id}
                 item={item}
                 currentUser={chatRoomInfo.currentUser}
