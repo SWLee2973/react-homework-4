@@ -13,6 +13,7 @@ dist-ssr
 *.local
 stories
 .storybook
+.env
 
 # Editor directories and files
 .vscode/*

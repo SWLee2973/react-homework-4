@@ -20,7 +20,7 @@ function Messenger() {
   };
 
   return (
-    <section className="bg-[#eee7d7] w-96 h-[720px] flex items-center flex-col">
+    <section className="bg-[#eee7d7] w-96 h-[720px] flex items-center flex-col relative">
       <h2 className="sr-only">Sang Messenger</h2>
       {isLogin ? (
         <ChatRoomList userInfo={token} changeState={changeLoginState} />

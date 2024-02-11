@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { usePb } from '/src/hooks';
 
 const getOtherUser = async (item, me) => {
@@ -18,7 +18,7 @@ const printDate = (date) => {
   return `${year}-${month}-${day}`;
 }
 
-function ChatRoomCard({ item, me }) {
+function ChatRoomCard({ item, me, opener }) {
   const [otherUser, setOtherUser] = useState('');
   const today = printDate(new Date());
 
@@ -28,7 +28,7 @@ function ChatRoomCard({ item, me }) {
     last.created.split(' ')[1].slice(0, 5)
     : last.created.split(' ')[0]
   );
-  
+
   const lastMessage = last ? last.message : '아직 대화가 없습니다.'
 
   useEffect(() => {
@@ -40,6 +40,7 @@ function ChatRoomCard({ item, me }) {
     <a
       href="#"
       className="hover:bg-gray-200 w-full min-h-16 bg-gray-100 flex items-center gap-5"
+      onClick={opener}
     >
       <img
         src="/assets/user.jpg"
@@ -59,4 +60,4 @@ function ChatRoomCard({ item, me }) {
   );
 }
 
-export default ChatRoomCard;
+export default memo(ChatRoomCard);
