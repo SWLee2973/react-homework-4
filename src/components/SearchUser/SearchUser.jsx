@@ -84,7 +84,7 @@ function SearchUser({ currentUser, closeHandler, resultOpen }) {
           defaultValue={user.value}
           onChange={debounce(handleSearchInput)}
         />
-        <ul className="flex flex-col gap-3">
+        <ul className="flex flex-col gap-3 h-[500px] overflow-y-scroll scrollbar-hide">
           {user.userList.length > 0 &&
             user.userList.map((item) => {
               return (
